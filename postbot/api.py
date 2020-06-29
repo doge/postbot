@@ -1,5 +1,7 @@
 import requests
 
+API_URL = "https://www.canadapost.ca/trackweb/rs/track/json/package/%s/detail"
+
 
 class ValidationError(ValueError):
     def __str__(self):
@@ -9,12 +11,11 @@ class ValidationError(ValueError):
 class CanadaPostPackage(object):
     def __init__(self, tracking_num):
         self.tracking_num = tracking_num
-        self.__api_url = "https://www.canadapost.ca/trackweb/rs/track/json/package/%s/detail"
         self.data = self.__validate_data()
 
     def get_all_data(self):
         with requests.Session() as sess:
-            data = sess.get(self.__api_url % self.tracking_num).json()
+            data = sess.get(API_URL % self.tracking_num).json()
             return data
 
     def __validate_data(self):
